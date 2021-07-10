@@ -9,6 +9,6 @@
   "author": "Jahanzeb Naeem",
   "license": "ISC",
   "dependencies": {
-    "superheroes": "^3.0.0"
+    "express": "^4.17.1"
   }
 }
