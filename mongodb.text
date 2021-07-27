@@ -22,7 +22,7 @@ db.products.insert(
   {
     _id: 3,
     name: "Rubber",
-    price: 1.30,
+    price: 10,
     stock: 43,
     review: [
       {

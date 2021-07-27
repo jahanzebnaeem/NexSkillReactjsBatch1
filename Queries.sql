@@ -10,6 +10,6 @@
 --INSERT INTO Customers VALUES (1, 'Naeem', 'Jahanzeb', 23);
 --SELECT * from Customers;
 --INSERT INTO Orders (1, 1, 1);
-SELECT Customers.FirstName 
+SELECT Customers.FirstName
 FROM Orders INNER JOIN Customers
-ON
+ON Orders.customerid = Customers.id;
