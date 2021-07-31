@@ -18,35 +18,49 @@ client.connect(function(err) {
 
   const db = client.db(dbName);
 
-  insertDocument(db, function() {
+  // insertDocument(db, function() {
+  //   client.close();
+  // });
+  findDocuments(db, function() {
     client.close();
   });
-
 });
 
-const insertDocument = function(db, callback) {
-  // get document collection
+// const insertDocument = function(db, callback) {
+//   // get document collection
+//   const collection = db.collection('fruits');
+//   // insert some document
+//   collection.insertMany([
+//     {
+//       name: "Apple",
+//       score: 8,
+//       review: "Great fruit"
+//     },
+//     {
+//       name: "Orange",
+//       score: 6,
+//       review: "Kinda sour"
+//     },
+//     {
+//       name: "Banana",
+//       score: 9,
+//       review: "Great stuff!"
+//     }
+//   ], function(err, result) {
+//     assert.equal(err, null);
+//     console.log("Inserted 3 documents into the collection");
+//     callback(result);
+//   });
+// };
+
+const findDocuments = function(db, callback) {
+  // Get the documents collection
   const collection = db.collection('fruits');
-  // insert some document
-  collection.insertMany([
-    {
-      name: "Apple",
-      score: 8,
-      review: "Great fruit"
-    },
-    {
-      name: "Orange",
-      score: 6,
-      review: "Kinda sour"
-    },
-    {
-      name: "Banana",
-      score: 9,
-      review: "Great stuff!"
-    }
-  ], function(err, result) {
+  // Find some documents
+  collection.find({}).toArray(function(err, fruits) {
     assert.equal(err, null);
-    console.log("Inserted 3 documents into the collection");
-    callback(result);
+    console.log("Found the following records");
+    console.log(fruits)
+    callback(fruits);
   });
 };
