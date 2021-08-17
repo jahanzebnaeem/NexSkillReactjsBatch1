@@ -2,7 +2,10 @@
 import React from 'react';
 import Article from './Article/Article';
 
+import useStyles from './styles';
+
 const Articles = () => {
+	const classes = useStyles();
 
 	return (
 		<>

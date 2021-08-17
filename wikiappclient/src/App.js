@@ -7,12 +7,16 @@ import ArticleForm from './components/Form/ArticleForm';
 
 import logo from "./images/CompanyLogo.png";
 
+import useStyles from './styles';
+
 const App = () => {
+  const classes = useStyles();
+
 	return (
 		<Container maxWidth="lg">
-      <AppBar position="static" color="inherit">
-        <Typography variant="h2" align="center">Wiki Application </Typography>
-        <img src={logo} alt="company logo" height="60" />
+      <AppBar className={classes.appBar} position="static" color="inherit">
+        <Typography className={classes.heading} variant="h2" align="center">Wiki Application </Typography>
+        <img className={classes.image} src={logo} alt="company logo" height="60" />
       </AppBar>
 			<Grow in>
         <Container>
