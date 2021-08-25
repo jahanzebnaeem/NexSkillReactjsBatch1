@@ -30,20 +30,20 @@ export const getArticles = async (req, res) => {
 	}
 };
 
-export const createArticle = (req, res) => {
-	res.send("Article Created!");
-};
-
-// export const createArticle = async (req, res) => {
-// 	const article = req.body;
-
-// 	const newArticle = new ArticleMsg(article);
-
-// 	try {
-// 		await newArticle.save();
-
-// 		res.status(200).json(newArticle);
-// 	} catch (error) {
-// 		res.status(409).json({message: error});
-// 	}
+// export const createArticle = (req, res) => {
+// 	res.send("Article Created!");
 // };
+
+export const createArticle = async (req, res) => {
+	const article = req.body;
+
+	const newArticle = new ArticleMsg(article);
+
+	try {
+		await newArticle.save();
+
+		res.status(201).json(newArticle);
+	} catch (error) {
+		res.status(409).json({message: error});
+	}
+};

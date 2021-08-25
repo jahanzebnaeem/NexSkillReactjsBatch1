@@ -6,10 +6,13 @@ export default (articles = [], action) => {
       return action.payload;
     case 'CREATE':
 			// return state;
-			return articles;
+			// return articles;
       // console.log(action.payload);
-      // return [...jobPosts, action.payload];
+      return [...articles, action.payload];
     default:
       return articles;
 	}
 };
+
+// content: '', title: ''
+// content: '', title: 'abc'
