@@ -11,8 +11,4 @@ export const getArticles = () => async (dispatch) => {
 	} catch (error) {
 		console.log(error);
 	}
-
-	// const action = {type: 'FETCH_ALL', payload: []};
-	// // return action;
-	// dispatch(action);
 };

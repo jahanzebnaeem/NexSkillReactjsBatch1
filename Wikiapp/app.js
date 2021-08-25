@@ -1,133 +1,24 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const ejs = require("ejs");
-const mongoose = require('mongoose');
-const cors = require("cors");
+// jshint esversion:6
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+
+import articleRoutes from "./routes/articles.js";
 
 const app = express();
 
-app.set('view engine', 'ejs');
-
 app.use(bodyParser.json({extended: true}));
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
-app.use(express.static("public"));
+app.use("/articles", articleRoutes);
 
-mongoose.connect("mongodb://localhost:27017/wikiDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).catch(function(err) {
-  console.log(err);
-});
+const CONNECTION_URL = "mongodb://localhost:27017/wikiDB";
+const PORT = process.env.PORT || 4000;
 
-const articleSchema = new mongoose.Schema({
-  title: String,
-  content: String
-});
+mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+	.then(() => app.listen(PORT, () => console.log(`Server running on port: ${PORT}`)))
+	.catch((error) => console.log(error));
 
-const Article = mongoose.model("Article", articleSchema);
-
-//////////////////////////// Multiple level ////////////////////////
-app.route("/articles")
-
-.get(function(req, res) {
-  Article.find(function(err, foundArticles) {
-    if (!err) {
-      // console.log(foundArticles);
-      res.send(foundArticles);
-    } else {
-      res.send(err);
-    }
-  })
-})
-
-.post(function(req, res) {
-  // console.log(req.body.title);
-  // console.log(req.body.content);
-
-  const newArticle = new Article({
-    title: req.body.title,
-    content: req.body.content
-  });
-
-  newArticle.save(function(err){
-    if (!err) {
-      res.send("Successfully added new article.");
-    } else {
-      res.send(err);
-    }
-  });
-})
-
-.delete(function(req, res) {
-  Article.deleteMany(function(err){
-    if (!err){
-      res.send("Successfully deleted all articles.");
-    } else {
-      res.send(err);
-    }
-  });
-});
-
-//////////////////////////// Single level ////////////////////////
-app.route("/articles/:articleTitle")
-
-.get(function(req, res) {
-  // console.log(req.params.articleTitle);
-  Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){
-    if (foundArticle) {
-      res.send(foundArticle);
-    } else {
-      res.send("No articles matching that title was found.");
-    }
-  });
-})
-
-.put(function(req, res){
-  // console.log(req.body.title);
-  // console.log(req.body.content);
-  Article.update(
-    {title: req.params.articleTitle},
-    {title: req.body.title, content: req.body.content},
-    {overwrite: true},
-    function(err){
-      if(!err){
-        res.send("Successfully updated the selected article.");
-      }
-    }
-  );
-})
-
-.patch(function(req, res){
-  Article.update(
-    {title: req.params.articleTitle},
-    {$set: req.body},
-    function(err){
-      if(!err){
-        res.send("Successfully updated article.");
-      } else {
-        res.send(err);
-      }
-    }
-  );
-})
-
-.delete(function(req, res){
-  Article.deleteOne(
-    {title: req.params.articleTitle},
-    function(err){
-      if (!err){
-        res.send("Successfully deleted the corresponding article.");
-      } else {
-        res.send(err);
-      }
-    }
-  );
-});
-
-app.listen(4000, function() {
-  console.log("Server started on port 4000");
-});
+mongoose.set("useFindAndModify", false);
